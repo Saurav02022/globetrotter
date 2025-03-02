@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
+import AuthForm from '@/components/auth/AuthForm'
 
 export default async function LoginPage() {
   const supabase = createClient()
@@ -22,11 +22,7 @@ export default async function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form action="/auth/sign-in" method="post">
-            <Button className="w-full" size="lg">
-              Continue with Google
-            </Button>
-          </form>
+          <AuthForm />
         </CardContent>
       </Card>
     </div>

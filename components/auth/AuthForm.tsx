@@ -13,7 +13,14 @@ export default function AuthForm() {
         supabaseClient={supabase}
         appearance={{ theme: ThemeSupa }}
         providers={['google']}
-        redirectTo={`${window.location.origin}/auth/callback`}
+        view="sign_in"
+        showLinks={false}
+        onlyThirdPartyProviders={true}
+        redirectTo={`${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback`}
+        queryParams={{
+          access_type: 'offline',
+          prompt: 'consent',
+        }}
       />
     </div>
   )
