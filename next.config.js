@@ -17,6 +17,10 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  // Remove console logs in production
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production'
+  },
 };
 
 module.exports = nextConfig; 
