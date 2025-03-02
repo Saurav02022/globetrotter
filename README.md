@@ -39,24 +39,54 @@ Test your knowledge of world destinations through cryptic clues and fun facts! C
 - **Framework**: Next.js 14 (App Router)
   - Server Components for improved performance
   - API Routes for backend functionality
+  - Server Actions for form handling
+  - Edge Runtime support
 - **Language**: TypeScript
   - Strong typing for better development experience
   - Type safety across the application
+  - ESLint configuration
 - **Auth**: Supabase Auth
   - Google OAuth integration
   - Secure session management
+  - Protected routes
 - **Database**: Supabase PostgreSQL
   - Structured data storage
   - Real-time capabilities
+  - Database triggers
+  - Row Level Security
 - **Styling**: Tailwind CSS
   - Responsive design
   - Dark mode support
   - Custom animations
+  - PostCSS plugins
+- **UI Components**:
+  - shadcn/ui components
+  - Radix UI primitives
+  - Lucide Icons
+  - Custom reusable components
+- **Form Handling**:
+  - React Hook Form
+  - Zod validation
+  - Server-side validation
+- **State Management**:
+  - React hooks
+  - Server state
+  - Form state
+- **Development Tools**:
+  - ESLint
+  - PostCSS
+  - TypeScript compiler
+  - ts-node for scripts
 - **Deployment**: Vercel
   - Automatic deployments
   - Environment variable management
-- **Animations**: Canvas Confetti
-- **Icons**: Lucide Icons
+  - Edge Functions
+  - Analytics
+- **Additional Libraries**:
+  - Canvas Confetti for celebrations
+  - html-to-image for share cards
+  - Sonner for toast notifications
+  - Framer Motion for animations
 
 ## 📦 Getting Started
 
