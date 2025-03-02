@@ -16,7 +16,7 @@ interface GameProps {
   challengeId?: string
 }
 
-export default function Game({ session }: GameProps) {
+export default function Game({ session, challengeId }: GameProps) {
   const supabase = createClient()
   const [currentDestination, setCurrentDestination] = useState<Destination | null>(null)
   const [options, setOptions] = useState<string[]>([])
@@ -24,11 +24,18 @@ export default function Game({ session }: GameProps) {
   const [score, setScore] = useState(0)
   const [gamesPlayed, setGamesPlayed] = useState(0)
   const [selectedClue, setSelectedClue] = useState<string>('')
+  const [challengeDetails, setChallengeDetails] = useState<{
+    creatorScore: number
+    completed: boolean
+  } | null>(null)
 
   useEffect(() => {
     loadNewDestination()
     loadUserStats()
-  }, [session.user.id])
+    if (challengeId) {
+      loadChallengeDetails()
+    }
+  }, [session.user.id, challengeId])
 
   const loadUserStats = async () => {
     const { data: profile } = await supabase
@@ -40,6 +47,23 @@ export default function Game({ session }: GameProps) {
     if (profile) {
       setScore(profile.score)
       setGamesPlayed(profile.games_played)
+    }
+  }
+
+  const loadChallengeDetails = async () => {
+    if (!challengeId) return
+
+    const { data: challenge } = await supabase
+      .from('challenges')
+      .select('*, creator:profiles(score)')
+      .eq('id', challengeId)
+      .single()
+
+    if (challenge) {
+      setChallengeDetails({
+        creatorScore: challenge.creator.score,
+        completed: false
+      })
     }
   }
 
@@ -90,6 +114,12 @@ export default function Game({ session }: GameProps) {
       })
       toast.success('Correct! 🎉')
       setScore(score + 1)
+
+      // Check if challenge is completed
+      if (challengeId && challengeDetails && score + 1 > challengeDetails.creatorScore) {
+        setChallengeDetails(prev => prev ? { ...prev, completed: true } : null)
+        toast.success('🏆 You beat the challenge!')
+      }
     } else {
       toast.error(`Wrong! The correct answer was ${currentDestination.city}`)
     }
@@ -134,11 +164,24 @@ export default function Game({ session }: GameProps) {
   return (
     <div className="max-w-2xl mx-auto p-4 space-y-6">
       <div className="flex justify-between items-center">
-        <div className="text-lg font-semibold">Score: {score}</div>
-        <Button onClick={createChallenge} variant="outline">
-          <Share2 className="w-4 h-4 mr-2" />
-          Challenge Friends
-        </Button>
+        <div className="space-y-1">
+          <div className="text-lg font-semibold">Score: {score}</div>
+          {challengeId && challengeDetails && (
+            <div className="text-sm text-muted-foreground">
+              {challengeDetails.completed ? (
+                <span className="text-green-500">Challenge completed! 🏆</span>
+              ) : (
+                `Score to beat: ${challengeDetails.creatorScore}`
+              )}
+            </div>
+          )}
+        </div>
+        {!challengeId && (
+          <Button onClick={createChallenge} variant="outline">
+            <Share2 className="w-4 h-4 mr-2" />
+            Challenge Friends
+          </Button>
+        )}
       </div>
 
       <Card className="p-6">

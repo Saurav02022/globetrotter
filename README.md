@@ -7,11 +7,13 @@ Test your knowledge of world destinations through cryptic clues and fun facts! C
 - [Tech Stack](#️-tech-stack)
 - [Getting Started](#-getting-started)
 - [Project Structure](#-project-structure)
+- [Navigation](#-navigation)
 - [API Documentation](#-api-documentation)
 - [Component Documentation](#-component-documentation)
 - [Database Schema](#-database-schema)
 - [Deployment](#-deployment)
 - [Game Flow](#-game-flow)
+- [Error Handling](#-error-handling)
 - [Contributing](#-contributing)
 - [License](#-license)
 - [Credits](#-credits)
@@ -26,8 +28,11 @@ Test your knowledge of world destinations through cryptic clues and fun facts! C
 - 🌙 Dark mode support
 - 🔐 Secure authentication with Google OAuth
 - 📱 Fully responsive design
-- 🎲 Random destination selection with difficulty levels
+- 🎲 Random destination selection
 - 📚 Rich destination database with clues, facts, and trivia
+- 👤 Profile management with stats
+- 🏆 Challenge creation and sharing
+- 📈 Global leaderboard system
 
 ## 🛠️ Tech Stack
 
@@ -224,30 +229,83 @@ Create a new challenge.
 
 ## 🎮 Game Flow
 
-1. Authentication:
-   - Users sign in with Google
+1. **Authentication**:
+   - Users sign in with Google OAuth
    - First-time users set a unique username
+   - Profile is automatically created
 
-2. Gameplay:
-   - Random destination is selected
-   - User is presented with clues
-   - Multiple choice options are displayed
-   - User selects their answer
-   - Feedback is shown (confetti for correct answers)
-   - Fun facts are revealed
-   - Score is updated
+2. **Profile Setup**:
+   - Username selection
+   - Profile customization
+   - Stats tracking initialization
 
-3. Challenge System:
-   - User creates a challenge
-   - Generates unique share code
+3. **Gameplay**:
+   - Random destination selection
+   - Cryptic clues presentation
+   - Multiple choice options
+   - Answer submission and feedback
+   - Score updates and animations
+   - Fun facts reveal
+
+4. **Challenge System**:
+   - Challenge creation from game
+   - 24-hour validity period
    - WhatsApp sharing integration
-   - Friends can play the challenge
-   - Scores are tracked and compared
+   - Score tracking and comparison
+   - Challenge completion celebration
 
-4. Leaderboard:
-   - Global rankings
-   - Challenge-specific rankings
-   - User statistics
+5. **Profile Management**:
+   - View total score
+   - Track games played
+   - Update username
+   - View challenge history
+
+6. **Leaderboard Features**:
+   - Global player rankings
+   - Score comparisons
+   - Recent achievements
+
+## 🧭 Navigation
+
+The application provides a comprehensive navigation system:
+
+### For Logged-in Users
+- **Home**: Quick access to the game via logo
+- **Play**: Start a new game session
+- **Leaderboard**: View global rankings
+- **Challenges**: Manage and participate in challenges
+- **Profile**: View stats and update settings
+- **Sign Out**: End the session
+
+### For Non-logged-in Users
+- **Home**: Welcome page with game information
+- **Sign In**: Google OAuth authentication
+
+## ❌ Error Handling
+
+The application includes comprehensive error handling:
+
+### Authentication Errors
+- Invalid credentials
+- Session expiration
+- Missing permissions
+
+### Challenge Errors
+- Challenge not found
+- Challenge expired
+- Invalid share code
+
+### Profile Errors
+- Username already taken
+- Profile not found
+- Update failures
+
+### Game Errors
+- Destination loading failures
+- Score update issues
+- Network connectivity problems
+
+All errors are presented with user-friendly messages and appropriate recovery options.
 
 ## 🤝 Contributing
 

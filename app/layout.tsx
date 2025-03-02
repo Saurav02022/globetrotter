@@ -28,11 +28,18 @@ async function Navigation() {
         <nav className="flex items-center gap-4">
           {session ? (
             <>
+             
               <Link href="/leaderboard">
                 <Button variant="ghost">Leaderboard</Button>
               </Link>
-              <form action="/auth/sign-out" method="post">
-                <Button variant="ghost">Sign Out</Button>
+              <Link href="/challenge">
+                <Button variant="ghost">Challenges</Button>
+              </Link>
+              <Link href="/profile">
+                <Button variant="ghost">Profile</Button>
+              </Link>
+              <form action="/auth/sign-out" method="POST">
+                <Button type="submit" variant="ghost">Sign Out</Button>
               </form>
             </>
           ) : (
@@ -46,7 +53,7 @@ async function Navigation() {
   )
 }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode

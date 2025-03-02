@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Game from '@/components/game/Game'
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 
 interface ChallengePageProps {
   params: {
@@ -11,40 +10,38 @@ interface ChallengePageProps {
 
 export default async function ChallengePage({ params }: ChallengePageProps) {
   const supabase = createClient()
-  
-  // Check if user is authenticated
   const { data: { session } } = await supabase.auth.getSession()
-  
+
   if (!session) {
     redirect('/login')
   }
 
-  // Get challenge details
+  // Fetch challenge details
   const { data: challenge } = await supabase
     .from('challenges')
-    .select(`
-      *,
-      creator:profiles(username, score)
-    `)
+    .select('*, creator:profiles(username, score)')
     .eq('share_code', params.code)
     .single()
 
   if (!challenge) {
-    redirect('/')
+    redirect('/challenge?error=not_found')
+  }
+
+  if (new Date(challenge.expires_at) < new Date()) {
+    redirect('/challenge?error=expired')
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle>Challenge from {challenge.creator.username}</CardTitle>
-          <CardDescription>
-            Can you beat their score of {challenge.creator.score}?
-          </CardDescription>
-        </CardHeader>
-      </Card>
-
+    <main className="min-h-screen flex flex-col">
+      <div className="container mx-auto px-4 py-6">
+        <div className="bg-muted rounded-lg p-4 mb-6">
+          <h1 className="text-xl font-bold mb-2">Challenge by {challenge.creator.username}</h1>
+          <p className="text-muted-foreground">
+            Score to beat: {challenge.creator.score} points
+          </p>
+        </div>
+      </div>
       <Game session={session} challengeId={challenge.id} />
-    </div>
+    </main>
   )
 } 
