@@ -3,20 +3,32 @@
 Test your knowledge of world destinations through cryptic clues and fun facts! Challenge your friends and discover interesting trivia about places around the globe.
 
 ## 📋 Table of Contents
+- [Overview](#-overview)
 - [Features](#-features)
 - [Tech Stack](#️-tech-stack)
 - [Getting Started](#-getting-started)
-- [Project Structure](#-project-structure)
-- [Navigation](#-navigation)
-- [API Documentation](#-api-documentation)
-- [Component Documentation](#-component-documentation)
-- [Database Schema](#-database-schema)
+- [Architecture](#-architecture)
+  - [Project Structure](#project-structure)
+  - [Technical Decisions](#technical-decisions)
+  - [Database Schema](#database-schema)
+- [Development](#-development)
+  - [Environment Setup](#environment-setup)
+  - [API Documentation](#api-documentation)
+  - [Component Documentation](#component-documentation)
 - [Deployment](#-deployment)
-- [Game Flow](#-game-flow)
-- [Error Handling](#-error-handling)
+  - [Vercel Setup](#vercel-setup)
+  - [Production Optimization](#production-optimization)
+- [User Guide](#-user-guide)
+  - [Game Flow](#game-flow)
+  - [Navigation](#navigation)
+  - [Error Handling](#error-handling)
 - [Contributing](#-contributing)
 - [License](#-license)
 - [Credits](#-credits)
+
+## 📖 Overview
+
+Globetrotter is an interactive travel guessing game that combines education with entertainment. Players test their knowledge of world destinations through cryptic clues and fun facts, while competing with friends through a challenge system.
 
 ## 🚀 Features
 
@@ -36,57 +48,53 @@ Test your knowledge of world destinations through cryptic clues and fun facts! C
 
 ## 🛠️ Tech Stack
 
+### Core Technologies
 - **Framework**: Next.js 14 (App Router)
   - Server Components for improved performance
   - API Routes for backend functionality
   - Server Actions for form handling
   - Edge Runtime support
+
 - **Language**: TypeScript
   - Strong typing for better development experience
   - Type safety across the application
   - ESLint configuration
-- **Auth**: Supabase Auth
-  - Google OAuth integration
-  - Secure session management
-  - Protected routes
-- **Database**: Supabase PostgreSQL
-  - Structured data storage
-  - Real-time capabilities
-  - Database triggers
-  - Row Level Security
+
+- **Backend Services**
+  - **Auth**: Supabase Auth
+    - Google OAuth integration
+    - Secure session management
+    - Protected routes
+  - **Database**: Supabase PostgreSQL
+    - Structured data storage
+    - Real-time capabilities
+    - Database triggers
+    - Row Level Security
+
+### Frontend Technologies
 - **Styling**: Tailwind CSS
   - Responsive design
   - Dark mode support
   - Custom animations
   - PostCSS plugins
-- **UI Components**:
+
+- **UI Components**
   - shadcn/ui components
   - Radix UI primitives
   - Lucide Icons
   - Custom reusable components
-- **Form Handling**:
-  - React Hook Form
-  - Zod validation
-  - Server-side validation
-- **State Management**:
-  - React hooks
-  - Server state
-  - Form state
-- **Development Tools**:
-  - ESLint
-  - PostCSS
-  - TypeScript compiler
-  - ts-node for scripts
-- **Deployment**: Vercel
-  - Automatic deployments
-  - Environment variable management
-  - Edge Functions
-  - Analytics
-- **Additional Libraries**:
-  - Canvas Confetti for celebrations
-  - html-to-image for share cards
-  - Sonner for toast notifications
-  - Framer Motion for animations
+
+### Development Tools
+- ESLint for code quality
+- PostCSS for CSS processing
+- TypeScript compiler
+- ts-node for scripts
+
+### Additional Libraries
+- Canvas Confetti for celebrations
+- html-to-image for share cards
+- Sonner for toast notifications
+- Framer Motion for animations
 
 ## 📦 Getting Started
 
@@ -100,7 +108,7 @@ Test your knowledge of world destinations through cryptic clues and fun facts! C
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/globetrotter.git
+   git clone https://github.com/Saurav02022/globetrotter.git
    cd globetrotter
    ```
 
@@ -114,11 +122,14 @@ Test your knowledge of world destinations through cryptic clues and fun facts! C
    - Run the database migrations (found in `supabase/migrations`)
    - Set up Google OAuth in Supabase dashboard
 
-4. Create a `.env.local` file:
+4. Configure environment variables:
+   Create a `.env.local` file with:
    ```env
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
    NEXT_PUBLIC_BASE_URL=http://localhost:3000
+   OPENAI_API_KEY=your_openai_api_key
+   SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
    ```
 
 5. Run the development server:
@@ -126,10 +137,9 @@ Test your knowledge of world destinations through cryptic clues and fun facts! C
    npm run dev
    ```
 
-6. Open [http://localhost:3000](http://localhost:3000) in your browser
+## 🏗 Architecture
 
-## 📁 Project Structure
-
+### Project Structure
 ```
 globetrotter/
 ├── app/                    # Next.js app directory
@@ -137,83 +147,36 @@ globetrotter/
 │   ├── auth/              # Authentication pages
 │   ├── challenge/         # Challenge pages
 │   ├── leaderboard/      # Leaderboard page
-│   ├── play/             # Game play page
 │   └── profile/          # User profile page
 ├── components/            # React components
-│   ├── auth/             # Authentication components
-│   ├── challenge/        # Challenge components
-│   ├── game/             # Game components
-│   ├── landing/          # Landing page components
-│   ├── profile/          # Profile components
-│   └── ui/               # Shared UI components
 ├── lib/                   # Utility functions
-│   ├── supabase/         # Supabase client
-│   └── utils/            # Helper functions
 ├── public/               # Static assets
 └── types/                # TypeScript types
 ```
 
-## 📡 API Documentation
+### Technical Decisions
 
-### Destinations API
+#### Authentication Flow
+- **Why Supabase Auth?**
+  - Built-in security features
+  - Seamless OAuth integration
+  - Robust session management
+  - Perfect fit for serverless architecture
 
-#### GET /api/destinations/random
-Get a random destination with multiple choice options.
+#### State Management Strategy
+- Server Components for initial state
+- React Hooks for client-side state
+- Supabase Real-time for live updates
 
-**Response:**
-```typescript
-{
-  destination: {
-    id: string;
-    city: string;
-    country: string;
-    clues: string[];
-    fun_facts: string[];
-    trivia: string[];
-  };
-  options: string[]; // Array of 4 city names including correct answer
-}
-```
+#### Performance Optimizations
+- Code splitting and dynamic imports
+- Static generation where possible
+- Edge runtime deployment
+- CDN optimization
 
-### Challenge API
+### Database Schema
 
-#### POST /api/challenge/create
-Create a new challenge.
-
-**Request Body:**
-```typescript
-{
-  creatorId: string;
-}
-```
-
-**Response:**
-```typescript
-{
-  shareCode: string;
-  expiresAt: string;
-}
-```
-
-## 🧩 Component Documentation
-
-### Game Component
-`components/game/Game.tsx`
-- Main game component handling game logic
-- Props:
-  - `session: Session` - User session
-  - `challengeId?: string` - Optional challenge ID
-
-### Challenge Components
-`components/challenge/ShareCard.tsx`
-- Generates shareable challenge card
-- Props:
-  - `username: string`
-  - `score: number`
-
-## 🗄️ Database Schema
-
-### destinations
+#### destinations
 - `id`: uuid (PK)
 - `city`: text
 - `country`: text
@@ -222,7 +185,7 @@ Create a new challenge.
 - `trivia`: jsonb[]
 - `created_at`: timestamptz
 
-### profiles
+#### profiles
 - `id`: uuid (PK, FK to auth.users)
 - `username`: text
 - `score`: int4
@@ -231,7 +194,7 @@ Create a new challenge.
 - `created_at`: timestamptz
 - `updated_at`: timestamptz
 
-### challenges
+#### challenges
 - `id`: uuid (PK)
 - `creator_id`: uuid (FK to profiles)
 - `share_code`: text
@@ -240,105 +203,53 @@ Create a new challenge.
 
 ## 🚀 Deployment
 
-### Vercel Deployment
-
+### Vercel Setup
 1. Fork this repository
 2. Create a new project on Vercel
 3. Connect your forked repository
-4. Add environment variables in Vercel:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `NEXT_PUBLIC_BASE_URL`
+4. Configure environment variables
 5. Deploy!
 
-### Environment Variables
+### Production Optimization
+- Console logs removed in production:
+  ```js
+  // next.config.js
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production'
+  }
+  ```
+- Error and warning logs preserved
+- Performance optimizations enabled
+- CDN caching configured
 
-- `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anonymous key
-- `NEXT_PUBLIC_BASE_URL`: Your deployment URL
+### Destination Generation
+- OpenAI API integration
+- Automated data population
+- Quality control system
+- Rich content generation
 
-## 🎮 Game Flow
+## 👥 User Guide
 
-1. **Authentication**:
-   - Users sign in with Google OAuth
-   - First-time users set a unique username
-   - Profile is automatically created
+### Game Flow
+1. Authentication & Profile Setup
+2. Gameplay Mechanics
+3. Challenge System
+4. Profile Management
+5. Leaderboard Features
 
-2. **Profile Setup**:
-   - Username selection
-   - Profile customization
-   - Stats tracking initialization
+### Navigation
+- Logged-in user features
+- Non-logged-in user access
+- Profile management
+- Challenge system
 
-3. **Gameplay**:
-   - Random destination selection
-   - Cryptic clues presentation
-   - Multiple choice options
-   - Answer submission and feedback
-   - Score updates and animations
-   - Fun facts reveal
-
-4. **Challenge System**:
-   - Challenge creation from game
-   - 24-hour validity period
-   - WhatsApp sharing integration
-   - Score tracking and comparison
-   - Challenge completion celebration
-
-5. **Profile Management**:
-   - View total score
-   - Track games played
-   - Update username
-   - View challenge history
-
-6. **Leaderboard Features**:
-   - Global player rankings
-   - Score comparisons
-   - Recent achievements
-
-## 🧭 Navigation
-
-The application provides a comprehensive navigation system:
-
-### For Logged-in Users
-- **Home**: Quick access to the game via logo
-- **Play**: Start a new game session
-- **Leaderboard**: View global rankings
-- **Challenges**: Manage and participate in challenges
-- **Profile**: View stats and update settings
-- **Sign Out**: End the session
-
-### For Non-logged-in Users
-- **Home**: Welcome page with game information
-- **Sign In**: Google OAuth authentication
-
-## ❌ Error Handling
-
-The application includes comprehensive error handling:
-
-### Authentication Errors
-- Invalid credentials
-- Session expiration
-- Missing permissions
-
-### Challenge Errors
-- Challenge not found
-- Challenge expired
-- Invalid share code
-
-### Profile Errors
-- Username already taken
-- Profile not found
-- Update failures
-
-### Game Errors
-- Destination loading failures
-- Score update issues
-- Network connectivity problems
-
-All errors are presented with user-friendly messages and appropriate recovery options.
+### Error Handling
+- Authentication errors
+- Challenge errors
+- Profile errors
+- Game errors
 
 ## 🤝 Contributing
-
 1. Fork the repository
 2. Create a feature branch
 3. Commit your changes
@@ -346,11 +257,9 @@ All errors are presented with user-friendly messages and appropriate recovery op
 5. Open a Pull Request
 
 ## 📝 License
-
 MIT License - feel free to use this code for your own projects!
 
 ## 🙏 Credits
-
 - Dataset generated with assistance from AI
 - Icons from [Lucide Icons](https://lucide.dev)
 - Confetti effects from [Canvas Confetti](https://www.kirilv.com/canvas-confetti/)
